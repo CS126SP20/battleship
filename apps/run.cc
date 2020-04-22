@@ -2,12 +2,15 @@
 
 #include <cinder/app/App.h>
 #include <cinder/app/RendererGl.h>
+#include <vector>
 
 #include "my_app.h"
 
 
 using cinder::app::App;
 using cinder::app::RendererGl;
+using std::string;
+using std::vector;
 
 
 namespace myapp {
