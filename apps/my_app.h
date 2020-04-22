@@ -9,6 +9,9 @@
 namespace myapp {
 
 class MyApp : public cinder::app::App {
+ private:
+  int tile_;
+  void DrawTiles();
  public:
   MyApp();
   void setup() override;
