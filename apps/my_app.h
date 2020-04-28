@@ -4,6 +4,7 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <cinder/app/App.h>
+#include <mylibrary/tilestate.h>
 
 
 namespace myapp {
@@ -11,6 +12,8 @@ namespace myapp {
 class MyApp : public cinder::app::App {
  private:
   int tile_;
+  int x_coord_;
+  int y_coord_;
   void DrawTiles();
  public:
   MyApp();
