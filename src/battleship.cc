@@ -14,8 +14,10 @@ void Battleship::InitializeGrid() {
   }
 }
 
-void Battleship::SetGridItem(int row, int col, char key) {
-  if (key == 'a' && ship_grid_[1][3]) {
+void Battleship::SetGridItem(int row, int col, char key1, char key2) {
+  int x = (int) key1 - 96;
+  int y = (int) key2 - 48;
+  if (x == row && y == col && ship_grid_[row][col]) {
     battle_grid_[row][col] = TileState::kHit;
   }
 }

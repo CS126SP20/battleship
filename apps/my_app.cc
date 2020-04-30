@@ -18,6 +18,7 @@ using cinder::app::KeyEvent;
 MyApp::MyApp() { }
 
 void MyApp::setup() {
+  key_counter = 0;
   engine.InitializeGrid();
   engine.InitializeShipGrid();
   rph::NotificationManager::getInstance()->add("Hello, World!", 5);
@@ -42,6 +43,7 @@ void MyApp::draw() {
     }*/
 }
 
+/*
 void MyApp::keyDown(KeyEvent event) {
   tile_ = event.getCode();
   char tile_char = event.getChar();
@@ -54,6 +56,55 @@ void MyApp::keyDown(KeyEvent event) {
       break;
     }
   }
+}*/
+
+
+void MyApp::keyDown(KeyEvent event) {
+  std::string tile_str;
+
+  //if the key was a letter --> if (((int)tile_char >= 97) && ((int)tile_char <= 122))
+  //if the key was a number --> if (((int)tile_char >= 49) && ((int)tile_char <= 52))
+
+
+  if (key_counter == 0) {
+    tile_x_char = event.getChar();
+    x_coord_ = 1;
+    key_counter++;
+  } else if (key_counter == 1) {
+    tile_y_char = event.getChar();
+    y_coord_ = 3;
+    tile_str.push_back(tile_x_char);
+    tile_str.push_back(tile_y_char);
+    engine.SetGridItem(x_coord_, y_coord_, tile_x_char, tile_y_char);
+    rph::NotificationManager::getInstance()->add("Keys " + tile_str + " was pressed", 5);
+    key_counter = 0;
+  }
+
+  /*
+  if ((int)tile_x_char == 97) {
+    key_counter++;
+    //fake values
+    x_coord_ = 1;
+    y_coord_ = 3;
+    engine.SetGridItem(x_coord_, y_coord_, tile_x_char, tile_y_char);
+    rph::NotificationManager::getInstance()->add("Key " + tile_str + " was pressed", 5);
+    if ((int)tile_char == 51) {
+      counter++;
+      y_coord_ = 3;
+      engine.SetGridItem(x_coord_, y_coord_, tile_char);
+    }
+  }
+
+  tile_ = event.getCode();
+  switch (event.getCode()) {
+    case KeyEvent::KEY_a: {
+      x_coord_ = 1;
+      y_coord_ = 3;
+      engine.SetGridItem(x_coord_, y_coord_, tile_char);
+      rph::NotificationManager::getInstance()->add("Key 'A' was pressed", 5);
+      break;
+    }
+  }*/
 }
 
 void MyApp::DrawTiles() {
@@ -70,8 +121,11 @@ void MyApp::DrawTiles() {
       x2 = x1 + tile_size - space;
       y2 = y1 + tile_size - space;
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
-        //TODO this isn't working
+        // TODO this isn't working
         cinder::gl::color(0, 0, 1);
+        cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
+      } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
+        cinder::gl::color(1, 0, 0);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else {
         cinder::gl::color(0, 1, 0);

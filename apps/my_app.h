@@ -11,7 +11,9 @@ namespace myapp {
 
 class MyApp : public cinder::app::App {
  private:
+  char tile_x_char, tile_y_char;
   int tile_;
+  int key_counter;
   int x_coord_;
   int y_coord_;
   void DrawTiles();

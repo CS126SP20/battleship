@@ -16,7 +16,7 @@ class Battleship {
  public:
   void InitializeGrid();
   void InitializeShipGrid();
-  void SetGridItem(int row, int col, char key);
+  void SetGridItem(int row, int col, char key1, char key2);
   TileState GetGridItem(int row, int col);
 };
 
