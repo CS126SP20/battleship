@@ -4,8 +4,8 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <cinder/app/App.h>
+#include <mylibrary/battleship.h>
 #include <mylibrary/tilestate.h>
-
 
 namespace myapp {
 

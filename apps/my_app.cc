@@ -32,7 +32,6 @@ void MyApp::draw() {
 
   DrawTiles();
 
-
 /*  cinder::gl::color(0, 1, 0);
     cinder::gl::drawSolidRect(Rectf(500,500,650,650));
 
@@ -43,68 +42,30 @@ void MyApp::draw() {
     }*/
 }
 
-/*
-void MyApp::keyDown(KeyEvent event) {
-  tile_ = event.getCode();
-  char tile_char = event.getChar();
-  switch (event.getCode()) {
-    case KeyEvent::KEY_a: {
-      x_coord_ = 1;
-      y_coord_ = 3;
-      engine.SetGridItem(x_coord_, y_coord_, tile_char);
-      rph::NotificationManager::getInstance()->add("Key 'A' was pressed", 5);
-      break;
-    }
-  }
-}*/
-
-
 void MyApp::keyDown(KeyEvent event) {
   std::string tile_str;
 
-  //if the key was a letter --> if (((int)tile_char >= 97) && ((int)tile_char <= 122))
-  //if the key was a number --> if (((int)tile_char >= 49) && ((int)tile_char <= 52))
-
-
   if (key_counter == 0) {
     tile_x_char = event.getChar();
-    x_coord_ = 1;
-    key_counter++;
+    x_coord_ = (int) tile_x_char - 96;;
+    if (x_coord_ >=1 && x_coord_ <= 4) {
+      key_counter++;
+    } else {
+      rph::NotificationManager::getInstance()->add("not a valid letter key", 5);
+    }
   } else if (key_counter == 1) {
     tile_y_char = event.getChar();
-    y_coord_ = 3;
-    tile_str.push_back(tile_x_char);
-    tile_str.push_back(tile_y_char);
-    engine.SetGridItem(x_coord_, y_coord_, tile_x_char, tile_y_char);
-    rph::NotificationManager::getInstance()->add("Keys " + tile_str + " was pressed", 5);
-    key_counter = 0;
-  }
-
-  /*
-  if ((int)tile_x_char == 97) {
-    key_counter++;
-    //fake values
-    x_coord_ = 1;
-    y_coord_ = 3;
-    engine.SetGridItem(x_coord_, y_coord_, tile_x_char, tile_y_char);
-    rph::NotificationManager::getInstance()->add("Key " + tile_str + " was pressed", 5);
-    if ((int)tile_char == 51) {
-      counter++;
-      y_coord_ = 3;
-      engine.SetGridItem(x_coord_, y_coord_, tile_char);
+    y_coord_ = (int) tile_y_char - 48;
+    if (y_coord_ >=1 && y_coord_ <= 4) {
+      tile_str.push_back(tile_x_char);
+      tile_str.push_back(tile_y_char);
+      engine.SetGridItem(x_coord_, y_coord_);
+      rph::NotificationManager::getInstance()->add("Keys " + tile_str + " was pressed", 5);
+      key_counter = 0;
+    } else {
+      rph::NotificationManager::getInstance()->add("not a valid number key", 5);
     }
   }
-
-  tile_ = event.getCode();
-  switch (event.getCode()) {
-    case KeyEvent::KEY_a: {
-      x_coord_ = 1;
-      y_coord_ = 3;
-      engine.SetGridItem(x_coord_, y_coord_, tile_char);
-      rph::NotificationManager::getInstance()->add("Key 'A' was pressed", 5);
-      break;
-    }
-  }*/
 }
 
 void MyApp::DrawTiles() {
