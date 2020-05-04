@@ -9,12 +9,13 @@
 
 namespace mylibrary {
 
-const int kGridSize = 6;
+const int kGridSize = 7;
 
 class Battleship {
  private:
   TileState battle_grid_[kGridSize][kGridSize]{};
   Ship ship_a_, ship_b_;
+
   struct Ship_Grid {
     Ship ship_obj_;
     bool has_ship_;
@@ -27,7 +28,8 @@ class Battleship {
   void InitializeShipGrid();
   void SetGridItem(int row, int col);
   TileState GetGridItem(int row, int col);
-};
+  void SetSinkTiles();
+  };
 
 
 

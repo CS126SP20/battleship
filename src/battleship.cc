@@ -8,18 +8,38 @@
 namespace mylibrary {
 
 void Battleship::InitializeGrid() {
-  for (int row = 0; row < 6; row++) {
-    for (int col = 0; col < 6; col++) {
+  for (int row = 1; row < 7; row++) {
+    for (int col = 1; col < 7; col++) {
       battle_grid_[row][col] = TileState::kEmpty;
     }
   }
 }
 
 void Battleship::SetGridItem(int row, int col) {
+  int counter;
+
   if (ship_grid_arr_[row][col].has_ship_) {
-    battle_grid_[row][col] = TileState::kHit;
+    counter = ship_grid_arr_[row][col].ship_obj_.GetCounter();
+    std::cout<< "counter " << counter << "\n";
+    if (counter > 0) {
+      battle_grid_[row][col] = TileState::kHit;
+      ship_grid_arr_[row][col].ship_obj_.SetCounter(counter--);
+      std::cout<< "updated counter " << counter << "\n";
+    } else {
+      SetSinkTiles();
+    }
   } else {
     battle_grid_[row][col] = TileState::kMiss;
+  }
+}
+
+void Battleship::SetSinkTiles() {
+  for (int row = 1; row < 7; row++) {
+    for (int col = 1; col < 7; col++) {
+      if (ship_grid_arr_[row][col].ship_obj_.GetCounter() == 0) {
+        battle_grid_[row][col] = TileState::kSink;
+      }
+    }
   }
 }
 
@@ -39,9 +59,25 @@ void Battleship::InitializeShipGrid() {
 
   ship_grid_arr_[2][1].has_ship_ = true;
   ship_grid_arr_[2][1].ship_obj_ = ship_a_;
+
+  ship_grid_arr_[3][1].has_ship_ = true;
+  ship_grid_arr_[3][1].ship_obj_ = ship_a_;
+
+  ship_grid_arr_[4][1].has_ship_ = true;
+  ship_grid_arr_[4][1].ship_obj_ = ship_a_;
+
   std::string ship_name = ship_grid_arr_[2][1].ship_obj_.GetName();
   int ship_size = ship_grid_arr_[2][1].ship_obj_.GetSize();
-  std::cout<< "ship name " << ship_name << " ship size " << ship_size;
+  std::cout<< "ship name " << ship_name << " ship size " << ship_size << "\n";
+
+  std::string ship_name1 = ship_grid_arr_[3][1].ship_obj_.GetName();
+  int ship_size1 = ship_grid_arr_[3][1].ship_obj_.GetSize();
+  std::cout<< "ship name " << ship_name1 << " ship size " << ship_size1 << "\n";
+
+  std::string ship_name2 = ship_grid_arr_[4][1].ship_obj_.GetName();
+  int ship_size2 = ship_grid_arr_[4][1].ship_obj_.GetSize();
+  std::cout<< "ship name " << ship_name2 << " ship size " << ship_size2 << "\n";
+
 
   /*
   for (int row = 1; row < 7; row+=2) {

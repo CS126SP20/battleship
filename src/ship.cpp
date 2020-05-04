@@ -26,7 +26,6 @@ int Ship::GetCounter() {
   return counter_;
 }
 
-
 void Ship::SetName(std::string name) {
   name_ = name;
 }

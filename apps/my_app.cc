@@ -10,7 +10,7 @@ namespace myapp {
 mylibrary::Battleship engine;
 
 using cinder::app::KeyEvent;
-    using cinder::Rectf;
+using cinder::Rectf;
 
 MyApp::MyApp() { }
 
@@ -74,6 +74,9 @@ void MyApp::DrawTiles() {
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
         cinder::gl::color(1, 0, 0);
+        cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
+      } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
+        cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else {
         cinder::gl::color(0, 1, 0);
