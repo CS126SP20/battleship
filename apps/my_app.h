@@ -11,12 +11,11 @@ namespace myapp {
 
 class MyApp : public cinder::app::App {
  private:
-  char tile_x_char, tile_y_char;
-  int tile_;
-  int key_counter;
+  char tile_x_char_, tile_y_char_;
+  int key_counter_;
   int x_coord_;
   int y_coord_;
-  void DrawTiles();
+  static void DrawTiles();
  public:
   MyApp();
   void setup() override;
