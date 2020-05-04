@@ -109,6 +109,10 @@ void Battleship::SetSinkTiles() {
 
 }
 
+bool Battleship::GetShipGridItem(int row, int col) {
+  return ship_grid_arr_[row][col].has_ship_;
+}
+
 TileState Battleship::GetGridItem(int row, int col) {
   return battle_grid_[row][col];
 }

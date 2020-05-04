@@ -29,6 +29,7 @@ class Battleship {
   void InitializeShipGrid();
   void SetGridItem(int row, int col);
   TileState GetGridItem(int row, int col);
+  bool GetShipGridItem(int row, int col);
   void SetSinkTiles();
   };
 

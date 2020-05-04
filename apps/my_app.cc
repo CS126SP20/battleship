@@ -15,6 +15,9 @@ using cinder::Rectf;
 MyApp::MyApp() { }
 
 void MyApp::setup() {
+  auto img = loadImage( loadAsset( "ship_image.jpg" ) );
+  mTex = cinder::gl::Texture2d::create(img);
+
   key_counter_ = 0;
   engine.InitializeGrid();
   engine.InitializeShipGrid();
@@ -78,6 +81,10 @@ void MyApp::DrawTiles() {
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
         cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
+      } else if (engine.GetShipGridItem(x, y)) {
+        cinder::gl::color(1, 1, 1);
+        cinder::gl::draw(mTex, Rectf(x1, y1, x2, y2));
+//        cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else {
         cinder::gl::color(0, 1, 0);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
