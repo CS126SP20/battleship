@@ -69,6 +69,15 @@ void Battleship::SetGridItem(int row, int col) {
         battle_grid_[row][col] = TileState::kHit;
         std::cout<< "updated counter " << counter << "\n";
       }
+    } else if (ship_name == ship_c_.GetName()) {
+      counter = ship_c_.GetCounter();
+      std::cout<< "counter " << counter << "\n";
+      if (counter > 0) {
+        counter--;
+        ship_c_.SetCounter(counter);
+        battle_grid_[row][col] = TileState::kHit;
+        std::cout<< "updated counter " << counter << "\n";
+      }
     }
     SetSinkTiles();
   } else {
@@ -88,6 +97,8 @@ void Battleship::SetSinkTiles() {
           ship_count = ship_a_.GetCounter();
         } else if (ship_name == ship_b_.GetName()) {
           ship_count = ship_b_.GetCounter();
+        } else if (ship_name == ship_c_.GetName()) {
+          ship_count = ship_c_.GetCounter();
         }
         if (ship_count == 0) {
           battle_grid_[row][col] = TileState::kSink;
@@ -130,6 +141,19 @@ void Battleship::InitializeShipGrid() {
   ship_grid_arr_[5][4].has_ship_ = true;
   ship_grid_arr_[5][4].ship_name_ = ship_b_.GetName();
 
+  //SHIP C
+  ship_grid_arr_[3][6].has_ship_ = true;
+  ship_grid_arr_[3][6].ship_name_ = ship_c_.GetName();
+  //ship_grid_arr_[2][1].ship_obj_ = ship_c_;
+
+  ship_grid_arr_[4][6].has_ship_ = true;
+  ship_grid_arr_[4][6].ship_name_ = ship_c_.GetName();
+
+  ship_grid_arr_[5][6].has_ship_ = true;
+  ship_grid_arr_[5][6].ship_name_ = ship_c_.GetName();
+
+  ship_grid_arr_[6][6].has_ship_ = true;
+  ship_grid_arr_[6][6].ship_name_ = ship_c_.GetName();
 
   /*
   for (int row = 1; row < 7; row+=2) {
