@@ -12,14 +12,13 @@ namespace mylibrary {
 
 const int kGridSize = 7;
 
-struct Ship_Grid {
-  std::string ship_name_;
-  Ship ship_obj_;
-  bool has_ship_;
-};
-
 class Battleship {
  private:
+  struct Ship_Grid {
+    std::string ship_name_;
+    Ship ship_obj_;
+    bool has_ship_;
+  };
   TileState battle_grid_[kGridSize][kGridSize]{};
   Ship ship_a_, ship_b_, ship_c_;
 
@@ -30,7 +29,7 @@ class Battleship {
   void InitializeShipGrid();
   void SetGridItem(int row, int col);
   TileState GetGridItem(int row, int col);
-  bool GetShipGridItem(int row, int col);
+  bool GetHasShip(int row, int col);
   void SetSinkTiles();
   void PlaceHShip(const std::string& ship_name, int size_ship);
   void PlaceVShip(const std::string& ship_name, int size_ship);

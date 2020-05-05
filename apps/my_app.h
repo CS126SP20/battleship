@@ -7,6 +7,7 @@
 #include <cinder/gl/gl.h>
 #include <mylibrary/battleship.h>
 #include <mylibrary/tilestate.h>
+#include <vector>
 
 namespace myapp {
 
@@ -17,6 +18,8 @@ class MyApp : public cinder::app::App {
   int x_coord_;
   int y_coord_;
   cinder::gl::Texture2dRef mTex;
+  bool is_game_over_;
+  bool printed_game_over_;
  public:
   MyApp();
   void setup() override;
@@ -25,6 +28,7 @@ class MyApp : public cinder::app::App {
   void keyDown(cinder::app::KeyEvent) override;
   void DrawTiles();
   void DrawLabels();
+  void GameOver();
 
 };
 

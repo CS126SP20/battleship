@@ -4,6 +4,9 @@
 
 #include <cinder/app/App.h>
 #include <rph/NotificationManager.h>
+#include <cinder/Vector.h>
+#include <cinder/gl/gl.h>
+#include <cinder/gl/draw.h>
 #include <cinder/Font.h>
 #include <cinder/Text.h>
 
@@ -35,6 +38,7 @@ using cinder::Rectf;
 
 MyApp::MyApp() { }
 
+//TODO create a constructor
 void MyApp::setup() {
   auto img = loadImage( loadAsset( "ship_image.jpg" ) );
   mTex = cinder::gl::Texture2d::create(img);
@@ -43,14 +47,35 @@ void MyApp::setup() {
   engine.InitializeGrid();
   engine.InitializeShipGrid();
   engine.PlaceShip();
+  is_game_over_ = false;
+  printed_game_over_ = false;
   rph::NotificationManager::getInstance()->add("Hello, World!", 2);
-
 }
 
-void MyApp::update() { }
+void MyApp::update() {
+  GameOver();
+  if (is_game_over_) {
+    std::cout<< "update --> game is over" << "\n";
+    return;
+  }
+}
 
 void MyApp::draw() {
+
+  if (is_game_over_) {
+    if (!printed_game_over_) cinder::gl::clear(Color(0, 0, 0));
+    std::cout<< "draw --> game is over" << "\n";
+
+    const Color color1 = {0, 1, 1};
+    const std::string text = " Game Over! ";
+    const cinder::vec2 loc1 = {375, 325};
+    cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 75));
+
+    return;
+  }
+
   cinder::gl::clear();
+
   rph::NotificationManager::getInstance()->draw();
 
   DrawLabels();
@@ -88,6 +113,7 @@ void MyApp::DrawTiles() {
   //to provide space between each tile
   int space = 7;
   int x1, y1, x2, y2;
+  //float cx, cy;
 
   //TODO make numbers constant
   for (int x = 1; x < 7; x++) {
@@ -96,8 +122,12 @@ void MyApp::DrawTiles() {
       y1 = y * tile_size + space;
       x2 = x1 + tile_size - space;
       y2 = y1 + tile_size - space;
+      //cx = (x1 + x2) / 2;
+      //cy = (y1 + y2) / 2;
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
         cinder::gl::color(1, 0, 1);
+        //const cinder::vec2 center = {cx, cy};
+        //cinder::gl::drawStrokedCircle(center, 25.0, 4, -1);
         cinder::gl::drawStrokedRect(Rectf(x1, y1, x2, y2), 3);
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
         cinder::gl::color(0, 0, 1);
@@ -105,7 +135,7 @@ void MyApp::DrawTiles() {
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
         cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
-      } else if (engine.GetShipGridItem(x, y)) {
+      } else if (engine.GetHasShip(x, y)) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(mTex, Rectf(x1, y1, x2, y2));
       } else {
@@ -114,6 +144,21 @@ void MyApp::DrawTiles() {
       }
     }
   }
+}
+
+void MyApp::GameOver() {
+  if (printed_game_over_) return;
+  for (int row = 1; row < 7; row++) {
+    for (int col = 1; col < 7; col++) {
+      if (engine.GetHasShip(row, col)) {
+        if (!(engine.GetGridItem(row, col) == mylibrary::TileState::kSink)) {
+          is_game_over_ = false;
+          return;
+        }
+      }
+    }
+  }
+  is_game_over_ = true;
 }
 
 void MyApp::DrawLabels() {

@@ -196,7 +196,7 @@ bool Battleship::HasShip(int x1, int y1, int x2, int y2) {
   return false;
 }
 
-bool Battleship::GetShipGridItem(int row, int col) {
+bool Battleship::GetHasShip(int row, int col) {
   return ship_grid_arr_[row][col].has_ship_;
 }
 
