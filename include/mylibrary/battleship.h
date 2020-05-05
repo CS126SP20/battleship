@@ -16,7 +16,7 @@ class Battleship {
  private:
   struct Ship_Grid {
     std::string ship_name_;
-    Ship ship_obj_;
+    //Ship ship_obj_;
     bool has_ship_;
   };
   TileState battle_grid_[kGridSize][kGridSize]{};

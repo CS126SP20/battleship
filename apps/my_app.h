@@ -20,6 +20,11 @@ class MyApp : public cinder::app::App {
   cinder::gl::Texture2dRef mTex;
   bool is_game_over_;
   bool printed_game_over_;
+  bool reveal_key;
+  size_t game_time_;
+  std::string game_time_str_;
+  std::chrono::time_point<std::chrono::system_clock> start_time_;
+  std::chrono::time_point<std::chrono::system_clock> end_time_;
  public:
   MyApp();
   void setup() override;

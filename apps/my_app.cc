@@ -14,6 +14,9 @@ using cinder::TextBox;
 using cinder::Color;
 using cinder::ColorA;
 using cinder::Rectf;
+using std::chrono::system_clock;
+using std::chrono::duration_cast;
+using std::chrono::seconds;
 
 #if defined(CINDER_COCOA_TOUCH)
 const char kNormalFont[] = "Arial";
@@ -47,30 +50,45 @@ void MyApp::setup() {
   engine.InitializeGrid();
   engine.InitializeShipGrid();
   engine.PlaceShip();
+  reveal_key = false;
   is_game_over_ = false;
   printed_game_over_ = false;
   rph::NotificationManager::getInstance()->add("Hello, World!", 2);
+
+  start_time_ = system_clock::now();
 }
 
 void MyApp::update() {
   GameOver();
   if (is_game_over_) {
+    end_time_ = system_clock::now();
+    const auto my_game_time = end_time_ - start_time_;
+    const auto total_time = duration_cast<seconds>(my_game_time);
+
+    game_time_ = static_cast<size_t>(total_time.count());
+    game_time_str_ = std::to_string(game_time_);
+
     std::cout<< "update --> game is over" << "\n";
     return;
   }
 }
 
 void MyApp::draw() {
-
   if (is_game_over_) {
-    if (!printed_game_over_) cinder::gl::clear(Color(0, 0, 0));
-    std::cout<< "draw --> game is over" << "\n";
+    if (!printed_game_over_) {
+      cinder::gl::clear(Color(0, 0, 0));
+    }
 
-    const Color color1 = {0, 1, 1};
-    const std::string text = " Game Over! ";
-    const cinder::vec2 loc1 = {375, 325};
-    cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 75));
+      std::cout << "draw --> game is over"
+                << "\n";
 
+      const Color color1 = {0, 1, 1};
+      const std::string text =
+          " Game Over! \n Total Time Taken: " + game_time_str_ + " sec";
+      const cinder::vec2 loc1 = {375, 325};
+      cinder::gl::drawStringCentered(text, loc1, color1,
+                                     cinder::Font(kNormalFont, 75));
+      //printed_game_over_ = true;
     return;
   }
 
@@ -85,7 +103,13 @@ void MyApp::draw() {
 void MyApp::keyDown(KeyEvent event) {
   std::string tile_str;
 
-  if (key_counter_ == 0) {
+  if (event.getCode() == KeyEvent::KEY_UP) {
+    reveal_key = true;
+    rph::NotificationManager::getInstance()->add("Now revealing the ships", 2);
+  } else if (event.getCode() == KeyEvent::KEY_DOWN) {
+    reveal_key = false;
+    rph::NotificationManager::getInstance()->add("Now hiding the ships", 2);
+  } else if (key_counter_ == 0) {
     tile_x_char_ = event.getChar();
     x_coord_ = (int) tile_x_char_ - 96;
     if (x_coord_ >= 1 && x_coord_ <= 6) {
@@ -135,7 +159,7 @@ void MyApp::DrawTiles() {
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
         cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
-      } else if (engine.GetHasShip(x, y)) {
+      } else if (engine.GetHasShip(x, y) && reveal_key) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(mTex, Rectf(x1, y1, x2, y2));
       } else {
