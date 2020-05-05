@@ -21,6 +21,7 @@ void MyApp::setup() {
   key_counter_ = 0;
   engine.InitializeGrid();
   engine.InitializeShipGrid();
+  engine.PlaceShip();
   rph::NotificationManager::getInstance()->add("Hello, World!", 5);
 }
 
@@ -74,7 +75,7 @@ void MyApp::DrawTiles() {
       y2 = y1 + tile_size - space;
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
         cinder::gl::color(0, 0, 1);
-        cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
+        cinder::gl::drawStrokedRect(Rectf(x1, y1, x2, y2), 3);
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
         cinder::gl::color(1, 0, 0);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));

@@ -31,6 +31,8 @@ class Battleship {
   TileState GetGridItem(int row, int col);
   bool GetShipGridItem(int row, int col);
   void SetSinkTiles();
+  void PlaceShip();
+  bool HasShip(int size_ship, int rand_x_coord, int rand_y_coord);
   };
 
 
