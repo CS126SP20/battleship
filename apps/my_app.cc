@@ -59,9 +59,7 @@ void MyApp::setup() {
 }
 
 void MyApp::update() {
-  GameOver();
   if (is_game_over_) {
-    end_time_ = system_clock::now();
     const auto my_game_time = end_time_ - start_time_;
     const auto total_time = duration_cast<seconds>(my_game_time);
 
@@ -71,6 +69,7 @@ void MyApp::update() {
     std::cout<< "update --> game is over" << "\n";
     return;
   }
+  GameOver();
 }
 
 void MyApp::draw() {
@@ -183,6 +182,8 @@ void MyApp::GameOver() {
     }
   }
   is_game_over_ = true;
+  end_time_ = system_clock::now();
+
 }
 
 void MyApp::DrawLabels() {
