@@ -17,8 +17,8 @@ using std::vector;
 namespace myapp {
 
 const int kSamples = 8;
-const int kWidth = 800;
-const int kHeight = 800;
+const int kWidth = 900;
+const int kHeight = 700;
 
 void ParseArgs(vector<string>* args) {
   gflags::SetUsageMessage(
@@ -40,7 +40,7 @@ void SetUp(App::Settings* settings) {
   ParseArgs(&args);
 
   settings->setWindowSize(kWidth, kHeight);
-  settings->setTitle("My CS 126 Application");
+  settings->setTitle("Solitary Battleship");
 }
 
 }  // namespace myapp

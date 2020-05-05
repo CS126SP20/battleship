@@ -17,33 +17,12 @@ Battleship::Battleship()
 {}
 
 void Battleship::InitializeGrid() {
-  for (int row = 1; row < 7; row++) {
-    for (int col = 1; col < 7; col++) {
+  for (int row = 1; row < kGridSize; row++) {
+    for (int col = 1; col < kGridSize; col++) {
       battle_grid_[row][col] = TileState::kEmpty;
     }
   }
 }
-
-/*
-void Battleship::SetGridItem(int row, int col) {
-  int counter;
-
-  if (ship_grid_arr_[row][col].has_ship_) {
-    counter = ship_grid_arr_[row][col].ship_obj_.GetCounter();
-    std::cout<< "counter " << counter << "\n";
-    if (counter > 0) {
-      battle_grid_[row][col] = TileState::kHit;
-      counter--;
-      ship_grid_arr_[row][col].ship_obj_.SetCounter(counter);
-      std::cout<< "updated counter " << counter << "\n";
-    } else {
-      SetSinkTiles();
-    }
-  } else {
-    battle_grid_[row][col] = TileState::kMiss;
-  }
-}*/
-
 
 void Battleship::SetGridItem(int row, int col) {
 
@@ -94,8 +73,8 @@ void Battleship::SetSinkTiles() {
   std::string ship_name;
   int ship_count;
 
-  for (int row = 1; row < 7; row++) {
-    for (int col = 1; col < 7; col++) {
+  for (int row = 1; row < kGridSize; row++) {
+    for (int col = 1; col < kGridSize; col++) {
       if (ship_grid_arr_[row][col].has_ship_) {
         ship_name = ship_grid_arr_[row][col].ship_name_;
         if (ship_name == ship_a_.GetName()) {
@@ -136,7 +115,7 @@ void Battleship::PlaceHShip(const std::string& ship_name, int size_ship) {
   for (int i = 0; i < 20; i++) {
     int rand_x, rand_y, x1, y1, x2, y2;
     rand_x = (rand() % (size_ship - 1)) + 1;
-    rand_y = (rand() % 6) + 1;
+    rand_y = (rand() % (kGridSize - 1)) + 1;
     x1 = rand_x - 1;
     y1 = rand_y - 1;
     x2 = rand_x + size_ship;
@@ -162,7 +141,7 @@ void Battleship::PlaceVShip(const std::string& ship_name, int size_ship) {
   std::srand(time(0));
   for (int i = 0; i < 20; i++) {
     int rand_x, rand_y, x1, y1, x2, y2;
-    rand_x = (rand() % 6) + 1;
+    rand_x = (rand() % (kGridSize - 1)) + 1;
     rand_y = (rand() % (size_ship - 1)) + 1;
     x1 = rand_x - 1;
     y1 = rand_y - 1;
@@ -205,53 +184,11 @@ TileState Battleship::GetGridItem(int row, int col) {
 }
 
 void Battleship::InitializeShipGrid() {
-    for (int row = 1; row < 7; row++) {
-      for (int col = 1; col < 7; col++) {
+    for (int row = 1; row < kGridSize; row++) {
+      for (int col = 1; col < kGridSize; col++) {
       ship_grid_arr_[row][col].has_ship_ = false;
     }
   }
-
-  //SHIP A
-  /*
-  ship_grid_arr_[2][2].has_ship_ = true;
-  ship_grid_arr_[2][2].ship_name_ = ship_a_.GetName();
-  //ship_grid_arr_[2][1].ship_obj_ = ship_a_;
-
-  ship_grid_arr_[3][2].has_ship_ = true;
-  ship_grid_arr_[3][2].ship_name_ = ship_a_.GetName();
-  //ship_grid_arr_[3][1].ship_obj_ = ship_a_;
-
-  ship_grid_arr_[4][2].has_ship_ = true;
-  ship_grid_arr_[4][2].ship_name_ = ship_a_.GetName();
-  //ship_grid_arr_[4][1].ship_obj_ = ship_a_;
-
-  //SHIP B
-  ship_grid_arr_[5][3].has_ship_ = true;
-  ship_grid_arr_[5][3].ship_name_ = ship_b_.GetName();
-  //ship_grid_arr_[2][1].ship_obj_ = ship_b_;
-
-  ship_grid_arr_[5][4].has_ship_ = true;
-  ship_grid_arr_[5][4].ship_name_ = ship_b_.GetName();
-
-  //SHIP C
-  ship_grid_arr_[3][6].has_ship_ = true;
-  ship_grid_arr_[3][6].ship_name_ = ship_c_.GetName();
-  //ship_grid_arr_[2][1].ship_obj_ = ship_c_;
-
-  ship_grid_arr_[4][6].has_ship_ = true;
-  ship_grid_arr_[4][6].ship_name_ = ship_c_.GetName();
-
-  ship_grid_arr_[5][6].has_ship_ = true;
-  ship_grid_arr_[5][6].ship_name_ = ship_c_.GetName();
-
-  ship_grid_arr_[6][6].has_ship_ = true;
-  ship_grid_arr_[6][6].ship_name_ = ship_c_.GetName();*/
-
 }
-
-
-
-
-
 
 }  // namespace mylibrary

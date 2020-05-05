@@ -53,8 +53,9 @@ void MyApp::setup() {
   reveal_key = false;
   is_game_over_ = false;
   printed_game_over_ = false;
-  rph::NotificationManager::getInstance()->add("Hello, World!", 2);
-
+  const cinder::vec2 loc1 = {375, 325};
+  rph::NotificationManager::getInstance()->add("Welcome to Battleship!",
+      2);
   start_time_ = system_clock::now();
 }
 
@@ -111,7 +112,7 @@ void MyApp::keyDown(KeyEvent event) {
   } else if (key_counter_ == 0) {
     tile_x_char_ = event.getChar();
     x_coord_ = (int) tile_x_char_ - 96;
-    if (x_coord_ >= 1 && x_coord_ <= 6) {
+    if (x_coord_ >= 1 && x_coord_ <= (kGridSize - 1)) {
       key_counter_++;
     } else {
       rph::NotificationManager::getInstance()->add("not a valid letter key", 2);
@@ -119,7 +120,7 @@ void MyApp::keyDown(KeyEvent event) {
   } else if (key_counter_ == 1) {
     tile_y_char_ = event.getChar();
     y_coord_ = (int) tile_y_char_ - 48;
-    if (y_coord_ >=1 && y_coord_ <= 6) {
+    if (y_coord_ >=1 && y_coord_ <= (kGridSize - 1)) {
       tile_str.push_back(tile_x_char_);
       tile_str.push_back(tile_y_char_);
       engine.SetGridItem(x_coord_, y_coord_);
@@ -132,19 +133,18 @@ void MyApp::keyDown(KeyEvent event) {
 }
 
 void MyApp::DrawTiles() {
-  int tile_size = 80;
   //to provide space between each tile
-  int space = 7;
+  int space = kGridSize;
   int x1, y1, x2, y2;
   //float cx, cy;
 
   //TODO make numbers constant
-  for (int x = 1; x < 7; x++) {
-    for (int y = 1; y < 7; y++) {
-      x1 = x * tile_size + space;
-      y1 = y * tile_size + space;
-      x2 = x1 + tile_size - space;
-      y2 = y1 + tile_size - space;
+  for (int x = 1; x < kGridSize; x++) {
+    for (int y = 1; y < kGridSize; y++) {
+      x1 = x * kTileSize + space;
+      y1 = y * kTileSize + space;
+      x2 = x1 + kTileSize - space;
+      y2 = y1 + kTileSize - space;
       //cx = (x1 + x2) / 2;
       //cy = (y1 + y2) / 2;
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
@@ -171,8 +171,8 @@ void MyApp::DrawTiles() {
 
 void MyApp::GameOver() {
   if (printed_game_over_) return;
-  for (int row = 1; row < 7; row++) {
-    for (int col = 1; col < 7; col++) {
+  for (int row = 1; row < kGridSize; row++) {
+    for (int col = 1; col < kGridSize; col++) {
       if (engine.GetHasShip(row, col)) {
         if (!(engine.GetGridItem(row, col) == mylibrary::TileState::kSink)) {
           is_game_over_ = false;
@@ -188,13 +188,13 @@ void MyApp::GameOver() {
 
 void MyApp::DrawLabels() {
   // test printing labels
-  int tile_size = 80;
+  int kTileSize = 80;
   int x, y;
   x = 120;
   y = 45;
   const Color color1 = {0, 1, 0};
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < (kGridSize - 1); i++) {
     int ascii_val = 65 + i;
     char ascii_char = (char) (ascii_val);
     std::string text(1, ascii_char);
@@ -203,7 +203,7 @@ void MyApp::DrawLabels() {
       const cinder::vec2 loc1 = {x, y};
       cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
     } else {
-      const cinder::vec2 loc1 = {x += (tile_size), y};
+      const cinder::vec2 loc1 = {x += (kTileSize), y};
       cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
     }
   }
@@ -211,13 +211,13 @@ void MyApp::DrawLabels() {
   x = 45;
   y = 115;
 
-  for (int j = 0; j < 6; j++) {
+  for (int j = 0; j < (kGridSize - 1); j++) {
     std::string text = std::to_string(j + 1);
     if (j == 0) {
       const cinder::vec2 loc1 = {x, y};
       cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
     } else {
-      const cinder::vec2 loc1 = {x, y += (tile_size)};
+      const cinder::vec2 loc1 = {x, y += (kTileSize)};
       cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
     }
   }

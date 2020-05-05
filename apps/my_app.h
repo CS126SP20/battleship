@@ -11,6 +11,9 @@
 
 namespace myapp {
 
+const int kGridSize = 7;
+const int kTileSize = 80;
+
 class MyApp : public cinder::app::App {
  private:
   char tile_x_char_, tile_y_char_;
