@@ -3,6 +3,7 @@
 #define FINALPROJECT_MYLIBRARY_EXAMPLE_H_
 
 #include <mylibrary/tilestate.h>
+
 #include "ship.h"
 
 #include <string>

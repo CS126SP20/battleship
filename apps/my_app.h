@@ -17,13 +17,14 @@ class MyApp : public cinder::app::App {
   int x_coord_;
   int y_coord_;
   cinder::gl::Texture2dRef mTex;
-  void DrawTiles();
  public:
   MyApp();
   void setup() override;
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
+  void DrawTiles();
+  void DrawLabels();
 
 };
 

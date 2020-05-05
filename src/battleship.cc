@@ -6,7 +6,6 @@
 #include <string>
 #include <chrono>
 
-
 namespace mylibrary {
 
 Battleship::Battleship()
@@ -47,6 +46,10 @@ void Battleship::SetGridItem(int row, int col) {
 
 
 void Battleship::SetGridItem(int row, int col) {
+
+  if (battle_grid_[row][col] == TileState::kHit) {
+      return;
+  }
 
   if (ship_grid_arr_[row][col].has_ship_) {
     int counter;
@@ -222,7 +225,6 @@ void Battleship::InitializeShipGrid() {
   ship_grid_arr_[4][2].ship_name_ = ship_a_.GetName();
   //ship_grid_arr_[4][1].ship_obj_ = ship_a_;
 
-
   //SHIP B
   ship_grid_arr_[5][3].has_ship_ = true;
   ship_grid_arr_[5][3].ship_name_ = ship_b_.GetName();
@@ -230,7 +232,6 @@ void Battleship::InitializeShipGrid() {
 
   ship_grid_arr_[5][4].has_ship_ = true;
   ship_grid_arr_[5][4].ship_name_ = ship_b_.GetName();
-
 
   //SHIP C
   ship_grid_arr_[3][6].has_ship_ = true;
@@ -246,22 +247,6 @@ void Battleship::InitializeShipGrid() {
   ship_grid_arr_[6][6].has_ship_ = true;
   ship_grid_arr_[6][6].ship_name_ = ship_c_.GetName();*/
 
-  /*
-  for (int row = 1; row < 7; row+=2) {
-    for (int col = 1; col < 7; col+=2) {
-      ship_grid_arr_[row][col].has_ship_ = true;
-      ship_grid_arr_[row][col].ship_obj_.SetName("hi");
-      ship_grid_arr_[row][col].ship_obj_.SetSize(2);
-    }
-  }
-
-  for (int row = 2; row < 7; row+=2) {
-    for (int col = 2; col < 7; col+=2) {
-      ship_grid_arr_[row][col].has_ship_ = false;
-      ship_grid_arr_[row][col].ship_obj_.SetName("hello");
-      ship_grid_arr_[row][col].ship_obj_.SetSize(3);
-    }
-  }*/
 }
 
 
