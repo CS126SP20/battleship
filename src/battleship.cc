@@ -13,7 +13,7 @@ Battleship::Battleship()
 : ship_grid_arr_(),
   ship_a_{Ship("shipA", 3)},
   ship_b_{Ship("shipB", 2)},
-  ship_c_{Ship("shipC", 4)}
+  ship_c_{Ship("shipC", 3)}
 
 {}
 
@@ -112,33 +112,79 @@ void Battleship::SetSinkTiles() {
 }
 
 void Battleship::PlaceShip() {
-  int size_ship = ship_a_.GetSize();
-  std::srand(time(0));
+  std::string ship_name;
+  int size_ship;
 
-  for (int i = 0; i < 10; i++) {
-    //generates from 1-3 ---> keeps putting in the same position though
-    int rand_x = (rand() % size_ship) + 1;
-    int rand_y = (rand() % 6) + 1;
+  ship_name = ship_a_.GetName();
+  size_ship = ship_a_.GetSize();
+  PlaceVShip(ship_name, size_ship);
+
+  ship_name = ship_b_.GetName();
+  size_ship = ship_b_.GetSize();
+  PlaceVShip(ship_name, size_ship);
+
+  ship_name = ship_c_.GetName();
+  size_ship = ship_c_.GetSize();
+  PlaceHShip(ship_name, size_ship);
+}
+
+void Battleship::PlaceHShip(const std::string& ship_name, int size_ship) {
+  std::srand(time(0));
+  for (int i = 0; i < 20; i++) {
+    int rand_x, rand_y, x1, y1, x2, y2;
+    rand_x = (rand() % (size_ship - 1)) + 1;
+    rand_y = (rand() % 6) + 1;
+    x1 = rand_x - 1;
+    y1 = rand_y - 1;
+    x2 = rand_x + size_ship;
+    y2 = rand_y + 1;
 
     std::cout << " x " << rand_x << " y " << rand_y << "\n";
 
-    //only for ship a
-    bool does_have_ship = HasShip(size_ship, rand_x, rand_y);
+    bool does_have_ship = HasShip(x1, y1, x2, y2);
     if (!does_have_ship) {
       for (int x = rand_x; x < (rand_x + size_ship); x++) {
+        std::cout << "assigned x " << x << " y " << rand_y << "\n";
         ship_grid_arr_[x][rand_y].has_ship_ = true;
-        ship_grid_arr_[x][rand_y].ship_name_ = ship_a_.GetName();
+        ship_grid_arr_[x][rand_y].ship_name_ = ship_name;
+        std::cout<< "ship " << ship_name << "\n";
       }
       //so it doesn't keep on looking for a place to put the ship
       break;
     }
   }
-  std::cout<< "could not place ship in 10 tries" << "\n";
 }
 
-bool Battleship::HasShip(int size_ship, int rand_x_coord, int rand_y_coord) {
-  for (int x = rand_x_coord - 1; x <= (rand_x_coord + size_ship); x++) {
-    for (int y = rand_y_coord - 1; y <= (rand_y_coord + 1); y++) {
+void Battleship::PlaceVShip(const std::string& ship_name, int size_ship) {
+  std::srand(time(0));
+  for (int i = 0; i < 20; i++) {
+    int rand_x, rand_y, x1, y1, x2, y2;
+    rand_x = (rand() % 6) + 1;
+    rand_y = (rand() % (size_ship - 1)) + 1;
+    x1 = rand_x - 1;
+    y1 = rand_y - 1;
+    x2 = rand_x + 1;
+    y2 = rand_y + size_ship;
+
+    std::cout << " x " << rand_x << " y " << rand_y << "\n";
+
+    bool does_have_ship = HasShip(x1, y1, x2, y2);
+    if (!does_have_ship) {
+      for (int y = rand_y; y < (rand_y + size_ship); y++) {
+        std::cout << "assigned x " << rand_x << " y " << y << "\n";
+        ship_grid_arr_[rand_x][y].has_ship_ = true;
+        ship_grid_arr_[rand_x][y].ship_name_ = ship_name;
+        std::cout<< "ship " << ship_name << "\n";
+      }
+      //so it doesn't keep on looking for a place to put the ship
+      break;
+    }
+  }
+}
+
+bool Battleship::HasShip(int x1, int y1, int x2, int y2) {
+  for (int x = x1; x <= x2; x++) {
+    for (int y = y1; y <= y2; y++) {
       if (ship_grid_arr_[x][y].has_ship_) {
         return true;
       }
@@ -175,7 +221,7 @@ void Battleship::InitializeShipGrid() {
   ship_grid_arr_[4][2].has_ship_ = true;
   ship_grid_arr_[4][2].ship_name_ = ship_a_.GetName();
   //ship_grid_arr_[4][1].ship_obj_ = ship_a_;
-*/
+
 
   //SHIP B
   ship_grid_arr_[5][3].has_ship_ = true;
@@ -184,6 +230,7 @@ void Battleship::InitializeShipGrid() {
 
   ship_grid_arr_[5][4].has_ship_ = true;
   ship_grid_arr_[5][4].ship_name_ = ship_b_.GetName();
+
 
   //SHIP C
   ship_grid_arr_[3][6].has_ship_ = true;
@@ -197,7 +244,7 @@ void Battleship::InitializeShipGrid() {
   ship_grid_arr_[5][6].ship_name_ = ship_c_.GetName();
 
   ship_grid_arr_[6][6].has_ship_ = true;
-  ship_grid_arr_[6][6].ship_name_ = ship_c_.GetName();
+  ship_grid_arr_[6][6].ship_name_ = ship_c_.GetName();*/
 
   /*
   for (int row = 1; row < 7; row+=2) {

@@ -28,7 +28,7 @@ void MyApp::setup() {
 void MyApp::update() { }
 
 void MyApp::draw() {
-  cinder::gl::clear();
+  //cinder::gl::clear();
   rph::NotificationManager::getInstance()->draw();
 
   DrawTiles();
@@ -74,7 +74,7 @@ void MyApp::DrawTiles() {
       x2 = x1 + tile_size - space;
       y2 = y1 + tile_size - space;
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
-        cinder::gl::color(0, 0, 1);
+        cinder::gl::color(1, 0, 1);
         cinder::gl::drawStrokedRect(Rectf(x1, y1, x2, y2), 3);
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
         cinder::gl::color(1, 0, 0);
