@@ -45,10 +45,14 @@ MyApp::MyApp()
     key_counter_ {0},
     x_coord_{0},
     y_coord_{0},
+
+    won_game_{true},
+    num_turns_{0},
+
     is_game_over_{false},
     printed_game_over_{false},
     reveal_key{false},
-    game_time_str_{} {}
+    game_time_str_{""} {}
 
 
 void MyApp::setup() {
@@ -83,21 +87,30 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
+  std::string text;
+  std::string text_turns;
+
   if (is_game_over_) {
     if (!printed_game_over_) {
       cinder::gl::clear(Color(0, 0, 0));
     }
+    std::cout << "draw --> game is over" << "\n";
 
-      std::cout << "draw --> game is over"
-                << "\n";
+    if (!won_game_) {
+      text = " You Lost! \n Total Time Taken: ";
+    } else {
+      text = " You Won! \n Total Time Taken: ";
+    }
 
-      const Color color1 = {0, 1, 1};
-      const std::string text =
-          " Game Over! \n Total Time Taken: " + game_time_str_ + " sec";
-      const cinder::vec2 loc1 = {375, 325};
-      cinder::gl::drawStringCentered(text, loc1, color1,
-                                     cinder::Font(kNormalFont, 75));
-    return;
+    text_turns = std::to_string(num_turns_);
+
+    const Color color1 = {0, 1, 1};
+    const std::string text1 = text + game_time_str_
+        + " sec \n Number of Turns: " + text_turns;
+    const cinder::vec2 loc1 = {375, 325};
+    cinder::gl::drawStringCentered(text1, loc1, color1,
+                                   cinder::Font(kNormalFont, 75));
+     return;
   }
 
   cinder::gl::clear();
@@ -121,21 +134,31 @@ void MyApp::keyDown(KeyEvent event) {
     tile_x_char_ = event.getChar();
     x_coord_ = (int) tile_x_char_ - 96;
     if (x_coord_ >= 1 && x_coord_ <= (kGridSize - 1)) {
+      //gets the first key
       key_counter_++;
     } else {
       rph::NotificationManager::
       getInstance()->add("not a valid letter key", 2);
     }
   } else if (key_counter_ == 1) {
+    //gets the second key
     tile_y_char_ = event.getChar();
     y_coord_ = (int) tile_y_char_ - 48;
     if (y_coord_ >=1 && y_coord_ <= (kGridSize - 1)) {
+      //num of turns user is taking
+      num_turns_++;
       tile_str.push_back(tile_x_char_);
       tile_str.push_back(tile_y_char_);
       engine.SetGridItem(x_coord_, y_coord_);
       rph::NotificationManager::
       getInstance()->add("Keys " + tile_str + " was pressed", 2);
       key_counter_ = 0;
+
+      if (num_turns_ > kTurnsToWin) {
+        won_game_ = false;
+        return;
+      }
+
     } else {
       rph::NotificationManager::
       getInstance()->add("not a valid number key", 2);
@@ -209,7 +232,8 @@ void MyApp::DrawTiles() {
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
         cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
-      } else if (engine.GetHasShip(x, y) && reveal_key) {
+      } else if ((engine.GetHasShip(x, y) && reveal_key)
+                || (engine.GetHasShip(x, y) && !won_game_)) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(ship_img, Rectf(x1, y1, x2, y2));
       } else {
@@ -222,6 +246,13 @@ void MyApp::DrawTiles() {
 
 void MyApp::GameOver() {
   if (printed_game_over_) return;
+
+  if (!won_game_) {
+    is_game_over_ = true;
+    end_time_ = system_clock::now();
+    return;
+  }
+
   for (int row = 1; row < kGridSize; row++) {
     for (int col = 1; col < kGridSize; col++) {
       if (engine.GetHasShip(row, col)) {

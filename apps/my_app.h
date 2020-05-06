@@ -13,6 +13,7 @@ namespace myapp {
 
 const int kGridSize = 7;
 const int kTileSize = 80;
+const int kTurnsToWin = 15;
 
 class MyApp : public cinder::app::App {
  private:
@@ -25,11 +26,17 @@ class MyApp : public cinder::app::App {
   //x and y coords that the user entered
   int x_coord_, y_coord_;
 
+  //number of turns user takes
+  int num_turns_;
+
   //ship images
   cinder::gl::Texture2dRef ship_img;
 
   //is the game over
   bool is_game_over_;
+
+  //if the user won
+  bool won_game_;
 
   //the printed game over screen
   bool printed_game_over_;
