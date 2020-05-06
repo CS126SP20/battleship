@@ -97,14 +97,11 @@ void MyApp::draw() {
       const cinder::vec2 loc1 = {375, 325};
       cinder::gl::drawStringCentered(text, loc1, color1,
                                      cinder::Font(kNormalFont, 75));
-      //printed_game_over_ = true;
     return;
   }
 
   cinder::gl::clear();
-
   rph::NotificationManager::getInstance()->draw();
-
   DrawLabels();
   DrawTiles();
 }
@@ -114,17 +111,20 @@ void MyApp::keyDown(KeyEvent event) {
 
   if (event.getCode() == KeyEvent::KEY_UP) {
     reveal_key = true;
-    rph::NotificationManager::getInstance()->add("Now revealing the ships", 2);
+    rph::NotificationManager::
+    getInstance()->add("Now revealing the ships", 2);
   } else if (event.getCode() == KeyEvent::KEY_DOWN) {
     reveal_key = false;
-    rph::NotificationManager::getInstance()->add("Now hiding the ships", 2);
+    rph::NotificationManager::
+    getInstance()->add("Now hiding the ships", 2);
   } else if (key_counter_ == 0) {
     tile_x_char_ = event.getChar();
     x_coord_ = (int) tile_x_char_ - 96;
     if (x_coord_ >= 1 && x_coord_ <= (kGridSize - 1)) {
       key_counter_++;
     } else {
-      rph::NotificationManager::getInstance()->add("not a valid letter key", 2);
+      rph::NotificationManager::
+      getInstance()->add("not a valid letter key", 2);
     }
   } else if (key_counter_ == 1) {
     tile_y_char_ = event.getChar();
@@ -133,12 +133,55 @@ void MyApp::keyDown(KeyEvent event) {
       tile_str.push_back(tile_x_char_);
       tile_str.push_back(tile_y_char_);
       engine.SetGridItem(x_coord_, y_coord_);
-      rph::NotificationManager::getInstance()->add("Keys " + tile_str + " was pressed", 2);
+      rph::NotificationManager::
+      getInstance()->add("Keys " + tile_str + " was pressed", 2);
       key_counter_ = 0;
     } else {
-      rph::NotificationManager::getInstance()->add("not a valid number key", 2);
+      rph::NotificationManager::
+      getInstance()->add("not a valid number key", 2);
     }
   }
+}
+
+void MyApp::DrawLabels() {
+  // test printing labels
+  int x, y;
+  x = 120;
+  y = 45;
+  const Color color1 = {0, 1, 0};
+
+  for (int i = 0; i < (kGridSize - 1); i++) {
+    int ascii_val = 65 + i;
+    char ascii_char = (char) (ascii_val);
+    std::string text(1, ascii_char);
+    //const std::string text1 = " A ";
+    if (i == 0) {
+      const cinder::vec2 loc1 = {x, y};
+      cinder::gl::drawStringCentered(text, loc1, color1,
+                                     cinder::Font(kNormalFont, 30));
+    } else {
+      const cinder::vec2 loc1 = {x += (kTileSize), y};
+      cinder::gl::drawStringCentered(text, loc1, color1,
+                                     cinder::Font(kNormalFont, 30));
+    }
+  }
+
+  x = 45;
+  y = 115;
+
+  for (int j = 0; j < (kGridSize - 1); j++) {
+    std::string text = std::to_string(j + 1);
+    if (j == 0) {
+      const cinder::vec2 loc1 = {x, y};
+      cinder::gl::drawStringCentered(text, loc1, color1,
+                                     cinder::Font(kNormalFont, 30));
+    } else {
+      const cinder::vec2 loc1 = {x, y += (kTileSize)};
+      cinder::gl::drawStringCentered(text, loc1, color1,
+                                     cinder::Font(kNormalFont, 30));
+    }
+  }
+
 }
 
 void MyApp::DrawTiles() {
@@ -192,45 +235,6 @@ void MyApp::GameOver() {
   }
   is_game_over_ = true;
   end_time_ = system_clock::now();
-
-}
-
-void MyApp::DrawLabels() {
-  // test printing labels
-  int kTileSize = 80;
-  int x, y;
-  x = 120;
-  y = 45;
-  const Color color1 = {0, 1, 0};
-
-  for (int i = 0; i < (kGridSize - 1); i++) {
-    int ascii_val = 65 + i;
-    char ascii_char = (char) (ascii_val);
-    std::string text(1, ascii_char);
-    //const std::string text1 = " A ";
-    if (i == 0) {
-      const cinder::vec2 loc1 = {x, y};
-      cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
-    } else {
-      const cinder::vec2 loc1 = {x += (kTileSize), y};
-      cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
-    }
-  }
-
-  x = 45;
-  y = 115;
-
-  for (int j = 0; j < (kGridSize - 1); j++) {
-    std::string text = std::to_string(j + 1);
-    if (j == 0) {
-      const cinder::vec2 loc1 = {x, y};
-      cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
-    } else {
-      const cinder::vec2 loc1 = {x, y += (kTileSize)};
-      cinder::gl::drawStringCentered(text, loc1, color1, cinder::Font(kNormalFont, 30));
-    }
-  }
-
 }
 
 

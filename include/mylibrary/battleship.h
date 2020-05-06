@@ -11,6 +11,10 @@
 namespace mylibrary {
 
 const int kGridSize = 7;
+const int kShipASize = 3;
+const int kShipBSize = 2;
+const int kShipCSize = 2;
+const int kNumCheck = 20;
 
 class Battleship {
  private:
