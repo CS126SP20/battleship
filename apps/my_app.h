@@ -35,10 +35,9 @@ class MyApp : public cinder::app::App {
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
   void DrawTiles();
-  void DrawLabels();
+  static void DrawLabels();
   void GameOver();
-
-};
+  };
 
 }  // namespace myapp
 

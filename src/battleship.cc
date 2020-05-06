@@ -181,6 +181,10 @@ void Battleship::SetSinkTiles() {
   }
 }
 
+void Battleship::SetHasShip(int row, int col) {
+  ship_grid_arr_[row][col].has_ship_ = true;
+}
+
 bool Battleship::GetHasShip(int row, int col) {
   return ship_grid_arr_[row][col].has_ship_;
 }

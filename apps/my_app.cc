@@ -190,7 +190,6 @@ void MyApp::DrawTiles() {
   int x1, y1, x2, y2;
   //float cx, cy;
 
-  //TODO make numbers constant
   for (int x = 1; x < kGridSize; x++) {
     for (int y = 1; y < kGridSize; y++) {
       x1 = x * kTileSize + space;
@@ -236,6 +235,5 @@ void MyApp::GameOver() {
   is_game_over_ = true;
   end_time_ = system_clock::now();
 }
-
 
 }  // namespace myapp

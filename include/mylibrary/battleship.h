@@ -3,7 +3,6 @@
 #define FINALPROJECT_MYLIBRARY_EXAMPLE_H_
 
 #include <mylibrary/tilestate.h>
-
 #include "ship.h"
 
 #include <string>
@@ -32,7 +31,10 @@ class Battleship {
   void InitializeShipGrid();
   void SetGridItem(int row, int col);
   TileState GetGridItem(int row, int col);
+  void SetHasShip(int row, int col);
   bool GetHasShip(int row, int col);
+  void SetShipName(int row, int col, std::string name);
+  std::string GetShipName(int row, int col);
   void SetSinkTiles();
   void PlaceHShip(const std::string& ship_name, int size_ship);
   void PlaceVShip(const std::string& ship_name, int size_ship);
