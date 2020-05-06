@@ -53,7 +53,7 @@ MyApp::MyApp()
 
 void MyApp::setup() {
   auto img = loadImage( loadAsset( "ship_image.jpg" ) );
-  mTex = cinder::gl::Texture2d::create(img);
+  ship_img = cinder::gl::Texture2d::create(img);
 
   key_counter_ = 0;
   engine.InitializeGrid();
@@ -211,7 +211,7 @@ void MyApp::DrawTiles() {
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else if (engine.GetHasShip(x, y) && reveal_key) {
         cinder::gl::color(1, 1, 1);
-        cinder::gl::draw(mTex, Rectf(x1, y1, x2, y2));
+        cinder::gl::draw(ship_img, Rectf(x1, y1, x2, y2));
       } else {
         cinder::gl::color(0, 1, 0);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));

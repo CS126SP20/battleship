@@ -8,7 +8,6 @@
 
 #include <catch2/catch.hpp>
 
-#include "../apps/my_app.h"
 
 // Ship Class
 TEST_CASE("Ship Get Size", "[ship class]") {
