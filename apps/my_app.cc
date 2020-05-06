@@ -9,6 +9,7 @@
 #include <cinder/gl/draw.h>
 #include <cinder/Font.h>
 #include <cinder/Text.h>
+#include <cinder/audio/Voice.h>
 
 using cinder::TextBox;
 using cinder::Color;
@@ -87,6 +88,26 @@ void MyApp::update() {
 
     return;
   }
+
+  for (int x = 1; x < kGridSize; x++) {
+    for (int y = 1; y < kGridSize; y++) {
+      if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
+        cinder::audio::SourceFileRef sourceFile =
+            cinder::audio::
+            load(cinder::app::loadAsset( "Torpedo+Explosion.mp3" ));
+        ship_hit_audio = cinder::audio::Voice::create( sourceFile );
+
+        // Start playing audio from the voice:
+        //TODO THIS STILL PLAYS EVEN AFTER I HIT ANOTHER KEY UNTIL THE TILE THAT WAS A HIT BECOMES A SINK
+        //TODO I SHOULD CHANGE IT NOW BUT I AM TIRED SO I AM GOING TO LEAVE IT LIKE THIS
+        ship_hit_audio->start();
+
+        //TODO i want it to stop after 2 seconds
+        //ship_hit_audio->stop();
+      }
+    }
+  }
+
   GameOver();
 }
 

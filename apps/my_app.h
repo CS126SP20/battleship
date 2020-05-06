@@ -8,6 +8,7 @@
 #include <mylibrary/battleship.h>
 #include <mylibrary/tilestate.h>
 #include <vector>
+#include <cinder/audio/Voice.h>
 
 namespace myapp {
 
@@ -37,6 +38,9 @@ class MyApp : public cinder::app::App {
 
   //ship sink
   cinder::gl::Texture2dRef ship_sink;
+
+  //ship hit audio
+  cinder::audio::VoiceRef ship_hit_audio;
 
   //is the game over
   bool is_game_over_;
