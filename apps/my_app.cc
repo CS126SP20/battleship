@@ -39,9 +39,18 @@ mylibrary::Battleship engine;
 using cinder::app::KeyEvent;
 using cinder::Rectf;
 
-MyApp::MyApp() { }
+MyApp::MyApp()
+  : tile_x_char_{'0'},
+    tile_y_char_ {'0'},
+    key_counter_ {0},
+    x_coord_{0},
+    y_coord_{0},
+    is_game_over_{false},
+    printed_game_over_{false},
+    reveal_key{false},
+    game_time_str_{} {}
 
-//TODO create a constructor
+
 void MyApp::setup() {
   auto img = loadImage( loadAsset( "ship_image.jpg" ) );
   mTex = cinder::gl::Texture2d::create(img);
