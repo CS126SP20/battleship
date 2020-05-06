@@ -45,10 +45,8 @@ MyApp::MyApp()
     key_counter_ {0},
     x_coord_{0},
     y_coord_{0},
-
     won_game_{true},
     num_turns_{0},
-
     is_game_over_{false},
     printed_game_over_{false},
     reveal_key{false},
@@ -56,8 +54,15 @@ MyApp::MyApp()
 
 
 void MyApp::setup() {
-  auto img = loadImage( loadAsset( "ship_image.jpg" ) );
-  ship_img = cinder::gl::Texture2d::create(img);
+  auto img1 = loadImage( loadAsset( "ship_image.jpg" ) );
+  ship_img = cinder::gl::Texture2d::create(img1);
+
+  auto img2 = loadImage( loadAsset( "boom.png" ) );
+  ship_hit = cinder::gl::Texture2d::create(img2);
+
+  auto img3 = loadImage( loadAsset( "sink-ship.jpg" ) );
+  ship_sink = cinder::gl::Texture2d::create(img3);
+
 
   key_counter_ = 0;
   engine.InitializeGrid();
@@ -80,7 +85,6 @@ void MyApp::update() {
     game_time_ = static_cast<size_t>(total_time.count());
     game_time_str_ = std::to_string(game_time_);
 
-    std::cout<< "update --> game is over" << "\n";
     return;
   }
   GameOver();
@@ -94,7 +98,6 @@ void MyApp::draw() {
     if (!printed_game_over_) {
       cinder::gl::clear(Color(0, 0, 0));
     }
-    std::cout << "draw --> game is over" << "\n";
 
     if (!won_game_) {
       text = " You Lost! \n Total Time Taken: ";
@@ -219,21 +222,17 @@ void MyApp::DrawTiles() {
       y1 = y * kTileSize + space;
       x2 = x1 + kTileSize - space;
       y2 = y1 + kTileSize - space;
-      //cx = (x1 + x2) / 2;
-      //cy = (y1 + y2) / 2;
+
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
-        cinder::gl::color(1, 0, 1);
-        //const cinder::vec2 center = {cx, cy};
-        //cinder::gl::drawStrokedCircle(center, 25.0, 4, -1);
-        cinder::gl::drawStrokedRect(Rectf(x1, y1, x2, y2), 3);
+        cinder::gl::color(1, 1, 1);
+        cinder::gl::draw(ship_hit, Rectf(x1, y1, x2, y2));
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kMiss) {
         cinder::gl::color(0, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
-        cinder::gl::color(1, 0, 1);
-        cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
-      } else if ((engine.GetHasShip(x, y) && reveal_key)
-                || (engine.GetHasShip(x, y) && !won_game_)) {
+        cinder::gl::color(1, 1, 1);
+        cinder::gl::draw(ship_sink, Rectf(x1, y1, x2, y2));
+      } else if (engine.GetHasShip(x, y) && reveal_key) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(ship_img, Rectf(x1, y1, x2, y2));
       } else {

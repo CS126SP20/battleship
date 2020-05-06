@@ -32,6 +32,12 @@ class MyApp : public cinder::app::App {
   //ship images
   cinder::gl::Texture2dRef ship_img;
 
+  //ship hit
+  cinder::gl::Texture2dRef ship_hit;
+
+  //ship sink
+  cinder::gl::Texture2dRef ship_sink;
+
   //is the game over
   bool is_game_over_;
 

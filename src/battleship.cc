@@ -60,15 +60,11 @@ void Battleship::PlaceHShip(const std::string& ship_name, int size_ship) {
     x2 = rand_x + size_ship;
     y2 = rand_y + 1;
 
-    std::cout << " x " << rand_x << " y " << rand_y << "\n";
-
     bool does_have_ship = HasShip(x1, y1, x2, y2);
     if (!does_have_ship) {
       for (int x = rand_x; x < (rand_x + size_ship); x++) {
-        std::cout << "assigned x " << x << " y " << rand_y << "\n";
         ship_grid_arr_[x][rand_y].has_ship_ = true;
         ship_grid_arr_[x][rand_y].ship_name_ = ship_name;
-        std::cout<< "ship " << ship_name << "\n";
       }
       //so it doesn't keep on looking for a place to put the ship
       break;
@@ -87,15 +83,11 @@ void Battleship::PlaceVShip(const std::string& ship_name, int size_ship) {
     x2 = rand_x + 1;
     y2 = rand_y + size_ship;
 
-    std::cout << " x " << rand_x << " y " << rand_y << "\n";
-
     bool does_have_ship = HasShip(x1, y1, x2, y2);
     if (!does_have_ship) {
       for (int y = rand_y; y < (rand_y + size_ship); y++) {
-        std::cout << "assigned x " << rand_x << " y " << y << "\n";
         ship_grid_arr_[rand_x][y].has_ship_ = true;
         ship_grid_arr_[rand_x][y].ship_name_ = ship_name;
-        std::cout<< "ship " << ship_name << "\n";
       }
       //so it doesn't keep on looking for a place to put the ship
       break;
@@ -122,34 +114,27 @@ void Battleship::SetGridItem(int row, int col) {
   if (ship_grid_arr_[row][col].has_ship_) {
     int counter;
     std::string ship_name = ship_grid_arr_[row][col].ship_name_;
-    std::cout << ship_name << "\n";
 
     if (ship_name == ship_a_.GetName()) {
       counter = ship_a_.GetCounter();
-      std::cout<< "counter " << counter << "\n";
       if (counter > 0) {
         counter--;
         ship_a_.SetCounter(counter);
         battle_grid_[row][col] = TileState::kHit;
-        std::cout<< "updated counter " << counter << "\n";
       }
     } else if (ship_name == ship_b_.GetName()) {
       counter = ship_b_.GetCounter();
-      std::cout<< "counter " << counter << "\n";
       if (counter > 0) {
         counter--;
         ship_b_.SetCounter(counter);
         battle_grid_[row][col] = TileState::kHit;
-        std::cout<< "updated counter " << counter << "\n";
       }
     } else if (ship_name == ship_c_.GetName()) {
       counter = ship_c_.GetCounter();
-      std::cout<< "counter " << counter << "\n";
       if (counter > 0) {
         counter--;
         ship_c_.SetCounter(counter);
         battle_grid_[row][col] = TileState::kHit;
-        std::cout<< "updated counter " << counter << "\n";
       }
     }
     SetSinkTiles();
