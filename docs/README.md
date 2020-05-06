@@ -3,10 +3,10 @@
 This is the documentation for my final project
 
 ## Solitary Battleship
-The project I would like to create is a solo battleship, 
+The project is a solo battleship, 
 a twist on the popular 2-player game.
 
-###Description
+### Description
 In this game the user will not have their own ships, and will 
 instead have try to call the coordinates of the computer's 
 ships, which will be placed randomly. 
@@ -14,8 +14,8 @@ ships, which will be placed randomly.
 If the user is able to sink all the ships in a certain number of turns, they will 
 win, if not they will lose and all the ships will be revealed.
 
-###Getting Started
-####Dependencies
+### Getting Started
+#### Dependencies
 - Cinder
     - Only for Windows Users
         - Download this version of Visual Studio Code: 
@@ -37,7 +37,7 @@ win, if not they will lose and all the ships will be revealed.
   - Place the Notification.cpp and the NotificationManager.cpp at the
   same level as your battleship directory
  
- ####Controls
+ #### Controls
  
 - Here is how to select a tile
 
