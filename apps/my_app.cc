@@ -1,7 +1,6 @@
 // Copyright (c) 2020 [Alekhya Vakkalagadda]. All rights reserved.
 
 #include "my_app.h"
-
 #include <cinder/app/App.h>
 #include <rph/NotificationManager.h>
 #include <cinder/Vector.h>
@@ -9,7 +8,6 @@
 #include <cinder/gl/draw.h>
 #include <cinder/Font.h>
 #include <cinder/Text.h>
-#include <cinder/audio/Voice.h>
 
 using cinder::TextBox;
 using cinder::Color;
@@ -53,7 +51,6 @@ MyApp::MyApp()
     reveal_key{false},
     game_time_str_{""} {}
 
-
 void MyApp::setup() {
   auto img1 = loadImage( loadAsset( "ship_image.jpg" ) );
   ship_img = cinder::gl::Texture2d::create(img1);
@@ -63,7 +60,6 @@ void MyApp::setup() {
 
   auto img3 = loadImage( loadAsset( "sink-ship.jpg" ) );
   ship_sink = cinder::gl::Texture2d::create(img3);
-
 
   key_counter_ = 0;
   engine.InitializeGrid();
@@ -79,35 +75,14 @@ void MyApp::setup() {
 }
 
 void MyApp::update() {
+  //calculates total time
   if (is_game_over_) {
     const auto my_game_time = end_time_ - start_time_;
     const auto total_time = duration_cast<seconds>(my_game_time);
-
     game_time_ = static_cast<size_t>(total_time.count());
     game_time_str_ = std::to_string(game_time_);
-
     return;
   }
-
-  for (int x = 1; x < kGridSize; x++) {
-    for (int y = 1; y < kGridSize; y++) {
-      if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
-        cinder::audio::SourceFileRef sourceFile =
-            cinder::audio::
-            load(cinder::app::loadAsset( "Torpedo+Explosion.mp3" ));
-        ship_hit_audio = cinder::audio::Voice::create( sourceFile );
-
-        // Start playing audio from the voice:
-        //TODO THIS STILL PLAYS EVEN AFTER I HIT ANOTHER KEY UNTIL THE TILE THAT WAS A HIT BECOMES A SINK
-        //TODO I SHOULD CHANGE IT NOW BUT I AM TIRED SO I AM GOING TO LEAVE IT LIKE THIS
-        ship_hit_audio->start();
-
-        //TODO i want it to stop after 2 seconds
-        //ship_hit_audio->stop();
-      }
-    }
-  }
-
   GameOver();
 }
 
@@ -115,29 +90,33 @@ void MyApp::draw() {
   std::string text;
   std::string text_turns;
 
+  //if the game is over
   if (is_game_over_) {
     if (!printed_game_over_) {
       cinder::gl::clear(Color(0, 0, 0));
     }
-
     if (!won_game_) {
       text = " You Lost! \n Total Time Taken: ";
     } else {
       text = " You Won! \n Total Time Taken: ";
     }
 
+    //show the ships at the end of the game by redrawing the tiles and labels
+    reveal_key = true;
+    DrawTiles();
+    DrawLabels();
     text_turns = std::to_string(num_turns_);
-
     const Color color1 = {0, 1, 1};
     const std::string text1 = text + game_time_str_
-        + " sec \n Number of Turns: " + text_turns;
-    const cinder::vec2 loc1 = {375, 325};
+                              + " sec \n Number of Turns: " + text_turns;
+    const cinder::vec2 loc1 = {450, 600};
     cinder::gl::drawStringCentered(text1, loc1, color1,
-                                   cinder::Font(kNormalFont, 75));
+                                   cinder::Font(kNormalFont, 40));
      return;
   }
 
   cinder::gl::clear();
+  //draws notifications, labels, and tiles
   rph::NotificationManager::getInstance()->draw();
   DrawLabels();
   DrawTiles();
@@ -146,6 +125,7 @@ void MyApp::draw() {
 void MyApp::keyDown(KeyEvent event) {
   std::string tile_str;
 
+  //checks to see if the key was a reveal/hide key
   if (event.getCode() == KeyEvent::KEY_UP) {
     reveal_key = true;
     rph::NotificationManager::
@@ -154,13 +134,14 @@ void MyApp::keyDown(KeyEvent event) {
     reveal_key = false;
     rph::NotificationManager::
     getInstance()->add("Now hiding the ships", 2);
-  } else if (key_counter_ == 0) {
+  } else if (key_counter_ == 0) {   //keeps track of number of keys pressed
     tile_x_char_ = event.getChar();
     x_coord_ = (int) tile_x_char_ - 96;
     if (x_coord_ >= 1 && x_coord_ <= (kGridSize - 1)) {
       //gets the first key
       key_counter_++;
     } else {
+      //checks if a valid key is pressed
       rph::NotificationManager::
       getInstance()->add("not a valid letter key", 2);
     }
@@ -178,12 +159,14 @@ void MyApp::keyDown(KeyEvent event) {
       getInstance()->add("Keys " + tile_str + " was pressed", 2);
       key_counter_ = 0;
 
+      //checks to see how many turns the user is taking
       if (num_turns_ > kTurnsToWin) {
         won_game_ = false;
         return;
       }
 
     } else {
+      //checks if a valid key is pressed
       rph::NotificationManager::
       getInstance()->add("not a valid number key", 2);
     }
@@ -191,17 +174,16 @@ void MyApp::keyDown(KeyEvent event) {
 }
 
 void MyApp::DrawLabels() {
-  // test printing labels
   int x, y;
+  const Color color1 = {1, 0, 1};
+
   x = 120;
   y = 45;
-  const Color color1 = {0, 1, 0};
-
+  //draws x coordinates
   for (int i = 0; i < (kGridSize - 1); i++) {
     int ascii_val = 65 + i;
     char ascii_char = (char) (ascii_val);
     std::string text(1, ascii_char);
-    //const std::string text1 = " A ";
     if (i == 0) {
       const cinder::vec2 loc1 = {x, y};
       cinder::gl::drawStringCentered(text, loc1, color1,
@@ -215,7 +197,7 @@ void MyApp::DrawLabels() {
 
   x = 45;
   y = 115;
-
+  //draws y coordinates
   for (int j = 0; j < (kGridSize - 1); j++) {
     std::string text = std::to_string(j + 1);
     if (j == 0) {
@@ -235,7 +217,6 @@ void MyApp::DrawTiles() {
   //to provide space between each tile
   int space = kGridSize;
   int x1, y1, x2, y2;
-  //float cx, cy;
 
   for (int x = 1; x < kGridSize; x++) {
     for (int y = 1; y < kGridSize; y++) {
@@ -244,6 +225,7 @@ void MyApp::DrawTiles() {
       x2 = x1 + kTileSize - space;
       y2 = y1 + kTileSize - space;
 
+      //checks to see the tile state of the tile
       if (engine.GetGridItem(x, y) == mylibrary::TileState::kHit) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(ship_hit, Rectf(x1, y1, x2, y2));
@@ -253,11 +235,12 @@ void MyApp::DrawTiles() {
       } else if (engine.GetGridItem(x, y) == mylibrary::TileState::kSink) {
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(ship_sink, Rectf(x1, y1, x2, y2));
-      } else if (engine.GetHasShip(x, y) && reveal_key) {
+      } else if (engine.GetHasShip(x, y) && reveal_key) {   //reveals ships
         cinder::gl::color(1, 1, 1);
         cinder::gl::draw(ship_img, Rectf(x1, y1, x2, y2));
       } else {
-        cinder::gl::color(0, 1, 0);
+        //tiles at empty state in the beginning
+        cinder::gl::color(1, 0, 1);
         cinder::gl::drawSolidRect(Rectf(x1, y1, x2, y2));
       }
     }

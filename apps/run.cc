@@ -18,7 +18,7 @@ namespace myapp {
 
 const int kSamples = 8;
 const int kWidth = 900;
-const int kHeight = 700;
+const int kHeight = 800;
 
 void ParseArgs(vector<string>* args) {
   gflags::SetUsageMessage(

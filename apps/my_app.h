@@ -8,7 +8,6 @@
 #include <mylibrary/battleship.h>
 #include <mylibrary/tilestate.h>
 #include <vector>
-#include <cinder/audio/Voice.h>
 
 namespace myapp {
 
@@ -27,6 +26,9 @@ class MyApp : public cinder::app::App {
   //x and y coords that the user entered
   int x_coord_, y_coord_;
 
+  //previous number of turns user takes
+  int prev_turns_;
+
   //number of turns user takes
   int num_turns_;
 
@@ -38,9 +40,6 @@ class MyApp : public cinder::app::App {
 
   //ship sink
   cinder::gl::Texture2dRef ship_sink;
-
-  //ship hit audio
-  cinder::audio::VoiceRef ship_hit_audio;
 
   //is the game over
   bool is_game_over_;
@@ -77,8 +76,8 @@ class MyApp : public cinder::app::App {
   void keyDown(cinder::app::KeyEvent) override;
 
   /**
-   * Draws the tiles on the GUI
-   */
+  * Draws the tiles on the GUI
+  */
   void DrawTiles();
 
   /**

@@ -28,7 +28,12 @@ struct information
  number of ships, Drew Labels on the GUI, Fixed naming in functions
     - ~~Need to create a constructor~~
     - ~~Need to implement timer~~
-    - Need to display total number of turns
+    - ~~Need to display total number of turns~~
     - ~~Need to have keys to reveal and hide the ships~~
 
- - **5/5/20** Completed Battleship
+ - **5/5/20** Was able to display total number of turns,
+ Implemented timer
+    - ~~Need to reveal the ships at the end of the game~~
+
+ - **5/6/20** Revealed the ships at the end of the game,
+ Completed project!
